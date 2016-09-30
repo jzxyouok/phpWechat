@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+        <title>WeUI</title>
+        <link rel="stylesheet" href="css/weui.min.css">
+        <style>
+        	#container{overflow-x: hidden;}
+			.button{padding: 2em 2em 0 2em;}
+			#dialog1{display:none;}
+			#dialog2{display:none;}
+			#dialog3{display:none;}
+			#toast{display:none;}
+			h1.page_title {text-align: center;font-size: 34px;color: #225fba;font-weight: 400;margin: 0 15%;}
+			.weui_uploader_success{float: left;position:relative;margin-right:9px;margin-bottom:9px;width:77px;height:77px;border:1px solid #d9d9d9;}
+			.weui_uploader_fail{float: left;position:relative;margin-right:9px;margin-bottom:9px;width:77px;height:77px;border:1px solid #d9d9d9;}
+			.weui_uploader_fail:before {content: " ";position: absolute;top: 0;right: 0;bottom: 0;left: 0;background-color: rgba(0,0,0,.5);}
+			#checkJsApi{margin: 2em 0;}
+			.weui_uploader_status_content {display: none;position: absolute;top: 50%;left: 50%;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);color: #FFFFFF;}
+			.weui_uploader_input_wrp,.weui_uploader_success,.weui_uploader_fail{margin: 0 auto;float:none;background-position: 50%;}
+        </style>
+    </head>
+    <body ontouchstart="">     
+      <div id="container">
+      <h1 class="page_title">上传图片</h1>
+		<div class="weui_cell weui_cells_img">
+		    <div class="weui_cell_bd weui_cell_primary">
+		        <div class="weui_uploader">
+		            <div class="weui_uploader_bd">
+		                <div class="weui_uploader_input_wrp">
+		                    <button class="weui_uploader_input" id="chooseImage"></button>
+		                    <div class="weui_uploader_status_content">
+                                    <i class="weui_icon_warn"></i>
+                            </div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</div>		
+		<div class="weui_dialog_alert" id="dialog1"><!--失败提示-->
+		    <div class="weui_mask"></div>
+		    <div class="weui_dialog">
+		        <div class="weui_dialog_hd"><strong class="weui_dialog_title">上传失败</strong></div>
+		        <div class="weui_dialog_ft">
+		            <a href="#" class="weui_btn_dialog primary">确定</a>
+		        </div>
+		    </div>
+		</div>
+		<div class="weui_dialog_alert" id="dialog2"><!--警告-->
+		    <div class="weui_mask"></div>
+		    <div class="weui_dialog">
+		        <div class="weui_dialog_hd"><strong class="weui_dialog_title">请先使用按钮选择图片</strong></div>
+		        <div class="weui_dialog_ft">
+		            <a href="#" class="weui_btn_dialog primary">确定</a>
+		        </div>
+		    </div>
+		</div>
+		<div class="weui_dialog_alert" id="dialog3"><!--警告-->
+		    <div class="weui_mask"></div>
+		    <div class="weui_dialog">
+		        <div class="weui_dialog_hd"><strong class="weui_dialog_title">目前仅支持单张图片,请重新上传</strong></div>
+		        <div class="weui_dialog_ft">
+		            <a href="#" class="weui_btn_dialog primary">确定</a>
+		        </div>
+		    </div>
+		</div>
+		<div id="toast"><!--Toast-->
+		    <div class="weui_mask_transparent"></div>
+		    <div class="weui_toast">
+		        <i class="weui_icon_toast"></i>
+		        <p class="weui_toast_content">已完成</p>
+		    </div>
+		</div>
+		<div class="button" id="uploadImage"><!--上传按钮-->
+			<div class="button_sp_area">
+			    <a href="#" class="weui_btn weui_btn_primary weui_btn_disabled">上传</a>
+			</div>	
+		</div>
+      </div>
+    </body>
+    <script src="js/jweixin-1.0.0.js"></script>
+    <script src="js/zepto.min.js"></script>
+    <script>  	
+         
+    	$(function () {
+    		var config={};
+	    	var now=Date.now()||new Date().getTime();
+	    	var url='https://1f1fd76c.ngrok.io/JsConfig.php?jsurl='+location.href.split('#')[0];
+			$.ajax({
+				url: url,
+				type: 'GET',
+				dataType:'json',
+				timeout:1000,
+				async:false,
+				success:function(data){
+					if (data.state=='scussed') {
+						config=data.data;
+						console.log(JSON.stringify(config));
+					}else{
+						alert('请求失败');
+					}
+				},
+			});
+            $('#dialog1').on('touchstart', '.weui_btn_dialog', function () {
+                $('#dialog1').hide();
+                document.querySelector('.weui_uploader_status_content').style.display="none";
+            });
+            $('#dialog2').on('touchstart', '.weui_btn_dialog', function () {
+                $('#dialog2').hide();
+            });
+            $('#dialog3').on('touchstart', '.weui_btn_dialog', function () {
+                $('#dialog3').hide();
+            });	
+            wx.config({
+				  debug: true,
+				  appId: config.appId,
+				  timestamp: config.timestamp,
+				  nonceStr: config.nonceStr,
+				  signature: config.signature,
+				  jsApiList: [
+				    'chooseImage',
+				    'uploadImage'
+				  ]
+			});		 		          
+		});	
+	 	
+    </script>
+    <script src="js/demo.js"></script>
+</html>
