@@ -111,15 +111,20 @@
                         "name":"小玩意",
                         "sub_button":[
                             {
-                                "name":"历史记录",
-                                "type":"click",
-                                "key":"more"
-                            },
-                            {
                                 "name":"打赏",
                                 "type":"click",
                                 "key":"money"
-                            }                                                     
+                            },                        
+                            {
+                                "name":"历史记录",
+                                "type":"click",
+                                "key":"more"
+                            }, 
+                            {
+                                "name":"二维码",
+                                "type":"click",
+                                "key":"qrcode"
+                            }                           
                         ]
                     }                                    
                 ]

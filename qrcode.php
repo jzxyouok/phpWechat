@@ -1,15 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: chenjianhao
- * Date: 2016-9-30
- * Time: 16:56
- */
     $qrcode=new qrCode();
     $qrcode->getqrCode();
     class qrCode{
-        private $appId = 'wx54abfd3dac845fab';
-        private $appsecret = 'addd017afa6d5dd22f48f69a638b9b0c';
         public function https_request($url, $data = null)
         {
             $curl = curl_init();
@@ -26,46 +18,22 @@
             return $output;
         }
         private function getAccessToken() {
-            // access_token 应该全局存储与更新，以下代码以写入到文件中做示例
-            $data=null;
-            if (file_exists('access_token.json')){
-                $data = json_decode(file_get_contents("access_token.json"));
-            }
-            if ($data){
-                if ($data->expire_time < time()) {
-                    $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$this->appId&secret=$this->appsecret";
-                    $res = json_decode($this->https_request($url));
-                    $access_token = $res->access_token;
-                    if ($access_token) {
-                        $data->expire_time = time() + 7000;
-                        $data->access_token = $access_token;
-                        $fp = fopen("access_token.json", "w");
-                        fwrite($fp, json_encode($data));
-                        fclose($fp);
-                    }
-                } else {
-                    $access_token = $data->access_token;
-                }
-            }else{
-                $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$this->appId&secret=$this->appsecret";
-                $res = json_decode($this->https_request($url));
-                $access_token = $res->access_token;
-                $data = new stdClass();
-                if ($access_token) {
-                    $data->expire_time = time() + 7000;
-                    $data->access_token = $access_token;
-                    file_put_contents("access_token.json",json_encode($data));
-                }
-            }
-            return $access_token;
+            require_once('./getAccessToken.php');
+            $accessToken=new AccessToken();
+            return $accessToken->getAccessToken();
         }
-
         public function getqrCode()
         {
             $url='https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token='.$this->getAccessToken();
-            $data='{"expire_seconds": 604800, "action_name": "QR_SCENE", "action_info": {"scene": {"scene_id": 123}}}';
-            $ticket=$this->https_request($url,$data);
+            $qrcode='{"expire_seconds": 7200, "action_name": "QR_SCENE", "action_info": {"scene": {"scene_id": 0}}}';
+            $ticket=json_decode($this->https_request($url,$qrcode),true)['ticket'];
             $url='https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='.urlencode($ticket);
-            echo $this->https_request($url);
+            $content = file_get_contents($url);
+            $filename = 'QR_SCENE.jpg';
+            file_put_contents($filename, $content);
+            header("content-type: image/jpeg");
+            $image=imagecreatefromjpeg($url);
+            imagejpeg($image);
+            imagedestroy($image);
         }
     }

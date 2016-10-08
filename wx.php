@@ -35,8 +35,8 @@ class WeixinTest{
                 case 'text':$result=$this->reciveText($postObj);break;//回复文本消息
                 case 'image':$result=$this->reciveImg($postObj);break;//回复图片消息
                 case 'voice':$result=$this->reciveVoice($postObj);break;//回复语音消息
-                case 'video':$result=$this->reciveVideo($postObj);break;
-                case 'location':$result=$this->reciveLocation($postObj);break;
+                case 'video':$result=$this->reciveVideo($postObj);break;//回复视频消息
+                case 'location':$result=$this->reciveLocation($postObj);break;//回复地理位置消息
             }
             echo $result;
         }else{
@@ -51,8 +51,18 @@ class WeixinTest{
         switch ($postObj->Event){
             case 'subscribe':$content='欢迎关注测试公众号';break;
             case 'unsubscribe':$content='感谢您关注测试公众号，希望下次可以再次关注';break;
+            case 'CLICK':
+                switch ($postObj->EventKey){
+                    case 'qrcode':$content=array('qrcode','');break;
+                    default:$content=$postObj->EventKey;
+                }
+                break;
         }
-        $content=$this->transmitText($postObj,$content);
+        if (is_array($content)){
+
+        }else{
+            $content=$this->transmitText($postObj,$content);
+        }
         return $content;
     }
 
