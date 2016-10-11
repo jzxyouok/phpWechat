@@ -1,5 +1,5 @@
 <?php
-    //header('Content-type:text/json;charset=utf-8');
+    header('Content-type:text/json;charset=utf-8');
     if ($_GET){
         $jsurl=$_GET['jsurl'];
         $jsConfig=new JsConfig();
@@ -27,38 +27,9 @@
             return $output;
         }
         private function getAccessToken() {
-            // access_token 应该全局存储与更新，以下代码以写入到文件中做示例
-            $data=null;
-            if (file_exists('access_token.json')){
-                $data = json_decode(file_get_contents("access_token.json"));
-            }
-            if ($data){
-                if ($data->expire_time < time()) {
-                    $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$this->appId&secret=$this->appsecret";
-                    $res = json_decode($this->https_request($url));
-                    $access_token = $res->access_token;
-                    if ($access_token) {
-                        $data->expire_time = time() + 7000;
-                        $data->access_token = $access_token;
-                        $fp = fopen("access_token.json", "w");
-                        fwrite($fp, json_encode($data));
-                        fclose($fp);
-                    }
-                } else {
-                    $access_token = $data->access_token;
-                }
-            }else{
-                $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$this->appId&secret=$this->appsecret";
-                $res = json_decode($this->https_request($url));
-                $access_token = $res->access_token;
-                $data = new stdClass();
-                if ($access_token) {
-                    $data->expire_time = time() + 7000;
-                    $data->access_token = $access_token;
-                    file_put_contents("access_token.json",json_encode($data));
-                }
-            }
-            return $access_token;
+            require_once('./getAccessToken.php');
+            $accessToken=new AccessToken();
+            return $accessToken->getAccessToken();
         }
         private function getJsTicket() {
             $data=null;
@@ -95,10 +66,18 @@
             }
             return $ticket;
         }
+        private function createNonceStr($length = 16) {
+            $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            $str = "";
+            for ($i = 0; $i < $length; $i++) {
+                $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
+            }
+            return $str;
+        }
         public function getJsConfig()
         {
             $jsapi_ticket=$this->getJsTicket();
-            $noncestr='Wm3WZYTPz0wzccnW';
+            $noncestr = $this->createNonceStr();
             $timestamp=time();
             $jsurl=$this->jsurl;
             $signature="jsapi_ticket=$jsapi_ticket&noncestr=$noncestr&timestamp=$timestamp&url=$jsurl";

@@ -81,50 +81,5 @@
     </body>
     <script src="js/jweixin-1.0.0.js"></script>
     <script src="js/zepto.min.js"></script>
-    <script>  	
-         
-    	$(function () {
-    		var config={};
-	    	var now=Date.now()||new Date().getTime();
-	    	var url='https://1f1fd76c.ngrok.io/JsConfig.php?jsurl='+location.href.split('#')[0];
-			$.ajax({
-				url: url,
-				type: 'GET',
-				dataType:'json',
-				timeout:1000,
-				async:false,
-				success:function(data){
-					if (data.state=='scussed') {
-						config=data.data;
-						console.log(JSON.stringify(config));
-					}else{
-						alert('请求失败');
-					}
-				},
-			});
-            $('#dialog1').on('touchstart', '.weui_btn_dialog', function () {
-                $('#dialog1').hide();
-                document.querySelector('.weui_uploader_status_content').style.display="none";
-            });
-            $('#dialog2').on('touchstart', '.weui_btn_dialog', function () {
-                $('#dialog2').hide();
-            });
-            $('#dialog3').on('touchstart', '.weui_btn_dialog', function () {
-                $('#dialog3').hide();
-            });	
-            wx.config({
-				  debug: true,
-				  appId: config.appId,
-				  timestamp: config.timestamp,
-				  nonceStr: config.nonceStr,
-				  signature: config.signature,
-				  jsApiList: [
-				    'chooseImage',
-				    'uploadImage'
-				  ]
-			});		 		          
-		});	
-	 	
-    </script>
-    <script src="js/demo.js"></script>
+    <script src="js/demo.js?v=a448421548"></script>
 </html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="app">
+        <ul>
+        </ul>
+    </div>
+    <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+        $(function() {
+            console.log(location.href);
+            var code=location.search.split('?')[1].split('&')[0].split('=')[1];
+            $.post('https://501ffe52.ngrok.io/scope/scope.php',{'code':code},function(data) {
+                console.log(typeof data);
+                $.each(data,function(name,value) {
+                    var val='<li><span>'+name+'</span>'+value+'</li>';
+                    $('#app ul').append(val);
+                })
+            })
+        })
+    </script>
+</body>
+</html>

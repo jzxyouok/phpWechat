@@ -73,6 +73,11 @@ class WeixinTest{
             $result=$this->transmiNews($postObj,$contennt);
             return $result;
         }
+        if($contennt=='授权'){
+            $contennt='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx54abfd3dac845fab&redirect_uri='.urlencode('https://501ffe52.ngrok.io/scope/scope.html').'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
+            $result=$this->transmitText($postObj,$contennt);
+            return $result;
+        }
         $result=$this->transmitText($postObj,$contennt);
         return $result;
     }
