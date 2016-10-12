@@ -28,6 +28,7 @@ class WeixinTest{
     {
         $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
         $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+        $result=null;
         if (!empty($postStr)){
             $msgType=trim($postObj->MsgType);
             switch ($msgType){
@@ -69,12 +70,19 @@ class WeixinTest{
     public function reciveText($postObj)
     {
         $contennt=$postObj->Content;
+        $result=null;
         if ($contennt=='程序员'){
             $result=$this->transmiNews($postObj,$contennt);
             return $result;
         }
+        if($contennt=='jssdk'){
+            $url='https://'.$_SERVER['SERVER_NAME'].'/demo/demo.html';
+            $result=$this->transmitText($postObj,$url);
+            return $result;
+        }
         if($contennt=='授权'){
-            $contennt='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx54abfd3dac845fab&redirect_uri='.urlencode('https://501ffe52.ngrok.io/scope/scope.html').'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
+            $url='https://'.$_SERVER['SERVER_NAME'].'/scope/scope.html';
+            $contennt='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx54abfd3dac845fab&redirect_uri='.urlencode($url).'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
             $result=$this->transmitText($postObj,$contennt);
             return $result;
         }

@@ -1,7 +1,8 @@
 $(function () {
 	var config={};
 	var now=Date.now()||new Date().getTime();
-	var url='http://501ffe52.ngrok.io/JsConfig.php?jsurl='+location.href.split('#')[0];
+	var url='https://7c807484.ngrok.io/JsConfig.php?jsurl='+location.href.split('#')[0];
+    sessionStorage.removeItem('serverId');
 	$.ajax({
 		url: url,
 		type: 'GET',
@@ -91,7 +92,16 @@ $(function () {
 		// 上传图片
 		document.querySelector('#uploadImage').addEventListener('touchstart', function() {
 			var i = 0,length = images.localId.length;
+            var serverId=sessionStorage.getItem('serverId');
 			images.serverId = [];
+            if(!serverId){
+                serverId=JSON.stringify(images.localId);
+                sessionStorage.setItem('serverId',serverId);
+            }else {
+                serverId=JSON.parse(serverId);
+                serverId.indexOf(images.localId[0])==-1&&serverId.push(images.localId[0]);
+                sessionStorage.setItem('serverId',JSON.stringify(serverId));
+            }
 			if (length == 0) {
 				chooseClass.uplenError();
 				$('#dialog2').show();
@@ -116,7 +126,7 @@ $(function () {
 								'mediaIds': images.serverId
 							};
 							$.ajax({
-								url: 'http://501ffe52.ngrok.io/demo/downImg.php',
+								url: 'https://7c807484.ngrok.io/demo/downImg.php',
 								type: 'GET',
 								data:loadObj,
 								timeout: 10000,
@@ -141,7 +151,12 @@ $(function () {
 					}
 				});
 			}
-			upload();
+			if(JSON.parse(sessionStorage.getItem('serverId')).indexOf(images.localId[0])!=-1){
+                alert(sessionStorage.getItem('serverId'));
+            }else {
+                upload();
+            }
+
 		});
 	});
 	wx.error(function(res) {
