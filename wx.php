@@ -76,9 +76,6 @@ class WeixinTest{
             return $result;
         }
         if($contennt=='jssdk'){
-<<<<<<< HEAD
-            $url='https://'.$_SERVER['SERVER_NAME'].'/demo/demo.html';
-=======
             $url='http://'.$_SERVER['SERVER_NAME'].'/jssdk/jssdk.html';
             $result=$this->transmitText($postObj,$url);
             return $result;
@@ -90,7 +87,6 @@ class WeixinTest{
         }
         if($contennt=='录音'){
             $url='http://'.$_SERVER['SERVER_NAME'].'/jssdk/audio.html';
->>>>>>> origin/master
             $result=$this->transmitText($postObj,$url);
             return $result;
         }

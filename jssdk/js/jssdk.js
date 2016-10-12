@@ -1,14 +1,8 @@
 $(function () {
 	var config={};
-<<<<<<< HEAD:demo/js/demo.js
-	var now=Date.now()||new Date().getTime();
-	var url='https://7c807484.ngrok.io/JsConfig.php?jsurl='+location.href.split('#')[0];
-    sessionStorage.removeItem('serverId');
-=======
-	var ajaxUrl='http://f942ffed.ngrok.io/';
+	var ajaxUrl='http://2eef9fb8.ngrok.io/';
 	var url=ajaxUrl+'JsConfig.php?jsurl='+location.href.split('#')[0];
 	sessionStorage.removeItem('serverId');
->>>>>>> origin/master:jssdk/js/jssdk.js
 	$.ajax({
 		url: url,
 		type: 'GET',
@@ -85,22 +79,7 @@ $(function () {
 		});
 		// 上传图片
 		document.querySelector('#uploadImage').addEventListener('touchstart', function() {
-<<<<<<< HEAD:demo/js/demo.js
-			var i = 0,length = images.localId.length;
-            var serverId=sessionStorage.getItem('serverId');
-			images.serverId = [];
-            if(!serverId){
-                serverId=JSON.stringify(images.localId);
-                sessionStorage.setItem('serverId',serverId);
-            }else {
-                serverId=JSON.parse(serverId);
-                serverId.indexOf(images.localId[0])==-1&&serverId.push(images.localId[0]);
-                sessionStorage.setItem('serverId',JSON.stringify(serverId));
-            }
-			if (length == 0) {
-=======
 			if (images.localId.length == 0) {
->>>>>>> origin/master:jssdk/js/jssdk.js
 				chooseClass.uplenError();
 				$('#dialog2').show();
 				return;
@@ -139,11 +118,7 @@ $(function () {
 								'mediaIds': images.serverId
 							};
 							$.ajax({
-<<<<<<< HEAD:demo/js/demo.js
-								url: 'https://7c807484.ngrok.io/demo/downImg.php',
-=======
 								url: ajaxUrl+'jssdk/downImg.php',
->>>>>>> origin/master:jssdk/js/jssdk.js
 								type: 'GET',
 								data:loadObj,
 								timeout:10000,
@@ -152,7 +127,7 @@ $(function () {
 									setTimeout(function() {
 										$('#toast').hide();
 									}, 1000);
-									console.log(JSON.stringify(data));
+
 								},
 								error: function() {
 									$("#dialog1").find('.weui_dialog_title').html('上传到第三方服务器失败!');
@@ -168,12 +143,7 @@ $(function () {
 					}
 				});
 			}
-			if(JSON.parse(sessionStorage.getItem('serverId')).indexOf(images.localId[0])!=-1){
-                alert(sessionStorage.getItem('serverId'));
-            }else {
                 upload();
-            }
-
 		});
 	});
 	wx.error(function() {
