@@ -1,16 +1,17 @@
 <?php
-    header('Content-type:text/json;charset=utf-8');
+    //header('Content-type:text/json;charset=utf-8');
     if ($_GET){
-        $mediaIds='';
+        $mediaIds=null;
         if (isset($_GET['mediaIds'])&&!empty($_GET['mediaIds'])){
-            $mediaIds=$_GET['mediaIds'][0];
+            $mediaIds=$_GET['mediaIds'];
         }
         $Img=new downImg();
         $Img->mediaId=$mediaIds;
         echo $Img->down();
+        //$Img->getDown();
     }
     class  downImg{
-        public $mediaId='';
+        public $mediaId=null;
         private function getAccessToken(){
             require_once('../getAccessToken.php');
             $accessToken=new AccessToken();
@@ -24,14 +25,22 @@
             }
             return $str;
         }
-        public function down()
+
+        public function getDown()
         {
             file_put_contents("mediaId.json", $this->mediaId);
             $accessToken=$this->getAccessToken();
-            $url='https://api.weixin.qq.com/cgi-bin/media/get?access_token='.$accessToken.'&media_id='.$this->mediaId;
-            $content = imagecreatefromjpeg($url);
-            $filename = 'images/'.$this->createName().'.jpg';
-            imagejpeg($content,$filename);
+            $mediaIds=$this->mediaId;
+            foreach ($mediaIds as $key=>$value){
+                $url='https://api.weixin.qq.com/cgi-bin/media/get?access_token='.$accessToken.'&media_id='.$value;
+                $content = imagecreatefromjpeg($url);
+                $filename = 'images/'.$this->createName().'.jpg';
+                $Imgfun= "imagejpeg";
+                $Imgfun($content,$filename);
+            }
+        }
+        public function down()
+        {
             $result=json_encode(array('state'=>'success','mediaId'=>$this->mediaId));
             return $result;
         }

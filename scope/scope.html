@@ -14,7 +14,11 @@
         $(function() {
             console.log(location.href);
             var code=location.search.split('?')[1].split('&')[0].split('=')[1];
+<<<<<<< HEAD
             $.post('https://7c807484.ngrok.io/scope/scope.php',{'code':code},function(data) {
+=======
+            $.post('https://f942ffed.ngrok.io/scope/scope.php',{'code':code},function(data) {
+>>>>>>> origin/master
                 console.log(typeof data);
                 $.each(data,function(name,value) {
                     var val='<li><span>'+name+'</span>'+value+'</li>';

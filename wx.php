@@ -54,13 +54,13 @@ class WeixinTest{
             case 'unsubscribe':$content='感谢您关注测试公众号，希望下次可以再次关注';break;
             case 'CLICK':
                 switch ($postObj->EventKey){
-                    case 'qrcode':$content=array('qrcode','');break;
+                    case 'qrcode':$content=array('qrcode'=>'P8vLRH6pJFWzS15DjxCtsov0iFnznXFnj3Nx_WjlVwe2o2Ca8pQP05JbyeQqCKcq');break;
                     default:$content=$postObj->EventKey;
                 }
                 break;
         }
         if (is_array($content)){
-
+            $content=$this->transmitImage($postObj,$content['qrcode']);
         }else{
             $content=$this->transmitText($postObj,$content);
         }
@@ -76,7 +76,21 @@ class WeixinTest{
             return $result;
         }
         if($contennt=='jssdk'){
+<<<<<<< HEAD
             $url='https://'.$_SERVER['SERVER_NAME'].'/demo/demo.html';
+=======
+            $url='http://'.$_SERVER['SERVER_NAME'].'/jssdk/jssdk.html';
+            $result=$this->transmitText($postObj,$url);
+            return $result;
+        }
+        if($contennt=='分享'){
+            $url='http://'.$_SERVER['SERVER_NAME'].'/jssdk/share.html';
+            $result=$this->transmitText($postObj,$url);
+            return $result;
+        }
+        if($contennt=='录音'){
+            $url='http://'.$_SERVER['SERVER_NAME'].'/jssdk/audio.html';
+>>>>>>> origin/master
             $result=$this->transmitText($postObj,$url);
             return $result;
         }

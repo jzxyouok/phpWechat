@@ -1,8 +1,14 @@
 $(function () {
 	var config={};
+<<<<<<< HEAD:demo/js/demo.js
 	var now=Date.now()||new Date().getTime();
 	var url='https://7c807484.ngrok.io/JsConfig.php?jsurl='+location.href.split('#')[0];
     sessionStorage.removeItem('serverId');
+=======
+	var ajaxUrl='http://f942ffed.ngrok.io/';
+	var url=ajaxUrl+'JsConfig.php?jsurl='+location.href.split('#')[0];
+	sessionStorage.removeItem('serverId');
+>>>>>>> origin/master:jssdk/js/jssdk.js
 	$.ajax({
 		url: url,
 		type: 'GET',
@@ -16,7 +22,7 @@ $(function () {
 			}else{
 				alert('请求失败');
 			}
-		},
+		}
 	});
 	$('#dialog1').on('touchstart', '.weui_btn_dialog', function () {
 		$('#dialog1').hide();
@@ -29,7 +35,7 @@ $(function () {
 		$('#dialog3').hide();
 	});
 	wx.config({
-		debug: false,
+		debug:false,
 		appId: config.appId,
 		timestamp: config.timestamp,
 		nonceStr: config.nonceStr,
@@ -59,38 +65,27 @@ $(function () {
 					document.querySelector('.weui_btn.weui_btn_primary.weui_btn_disabled').classList.add('weui_btn_disabled');
 				}
 			}
-		}
-
-		function SetCookie(name, value) {
-			var Days = 0.97; //此 cookie 将被保存2小时
-			var exp = new Date();
-			exp.setTime(exp.getTime() + Days * 2 * 60 * 60 * 1000);
-			document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
-		}
-
-		function getCookie(name) {
-			var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
-			if (arr != null) return unescape(arr[2]);
-			return null;
-		}
+		};
 		//拍照、本地选图
 		document.querySelector('#chooseImage').addEventListener('touchstart', function() {
 			var that = this;
 			wx.chooseImage({
-				count: 1,
+				count: 9,
 				sizeType: ['compressed'],
 				success: function(res) {
+					var i=0,len=res.localIds.length;
 					images.localId = res.localIds;
-					that.parentNode.style.backgroundImage = "url(" + images.localId[0] + ")";
-					that.parentNode.style.backgroundSize = "cover";
-					that.parentNode.classList.add('weui_uploader_success');
-					that.parentNode.classList.remove('weui_uploader_input_wrp');
-					document.querySelector('.weui_btn.weui_btn_primary.weui_btn_disabled').classList.remove('weui_btn_disabled');
+					$.each(res.localIds,function(index,item) {
+						var li=$('<li class="weui-uploader__file"></li>');
+						li.css('background-image','url('+item+')');
+						$(that).parent().prev('.weui-uploader__files').append(li);
+					});
 				}
 			});
 		});
 		// 上传图片
 		document.querySelector('#uploadImage').addEventListener('touchstart', function() {
+<<<<<<< HEAD:demo/js/demo.js
 			var i = 0,length = images.localId.length;
             var serverId=sessionStorage.getItem('serverId');
 			images.serverId = [];
@@ -103,16 +98,34 @@ $(function () {
                 sessionStorage.setItem('serverId',JSON.stringify(serverId));
             }
 			if (length == 0) {
+=======
+			if (images.localId.length == 0) {
+>>>>>>> origin/master:jssdk/js/jssdk.js
 				chooseClass.uplenError();
 				$('#dialog2').show();
 				return;
 			}
-			if (length > 1) {
-				$('#dialog3').show();
-				chooseClass.uplenError();
-				images.localId = [];
-				return;
+			var i = 0,length = images.localId.length;
+			var serverId=JSON.parse(sessionStorage.getItem('serverId'));
+			images.serverId = [];
+			if(!serverId){
+				serverId=JSON.stringify(images.localId);
+				sessionStorage.setItem('serverId',serverId);
+			}else {
+				if(serverId.indexOf(images.localId[i]!=-1)){
+					$("#dialog3").find('.weui_dialog_title').html('不能重复上传!');
+					$('#dialog3').show();
+					return;
+				}
+				serverId.push(images.localId[i]);
+				sessionStorage.setItem('serverId',JSON.stringify(serverId));
 			}
+			// if (length > 1) {//限制单张图片上传
+			// 	$('#dialog3').show();
+			// 	chooseClass.uplenError();
+			// 	images.localId = [];
+			// 	return;
+			// }
 			function upload() {
 				wx.uploadImage({
 					localId: images.localId[i],
@@ -126,26 +139,30 @@ $(function () {
 								'mediaIds': images.serverId
 							};
 							$.ajax({
+<<<<<<< HEAD:demo/js/demo.js
 								url: 'https://7c807484.ngrok.io/demo/downImg.php',
+=======
+								url: ajaxUrl+'jssdk/downImg.php',
+>>>>>>> origin/master:jssdk/js/jssdk.js
 								type: 'GET',
 								data:loadObj,
-								timeout: 10000,
+								timeout:10000,
 								success: function(data) {
 									$('#toast').show();
 									setTimeout(function() {
 										$('#toast').hide();
 									}, 1000);
-									//alert(JSON.stringify(data));
+									console.log(JSON.stringify(data));
 								},
 								error: function() {
-									$('#dialog1 .weui_dialog_title').html('上传到第三方服务器失败!');
+									$("#dialog1").find('.weui_dialog_title').html('上传到第三方服务器失败!');
 									$('#dialog1').show();
 									chooseClass.upFail();
 								}
 							});
 						}
 					},
-					fail: function(res) {
+					fail: function() {
 						$('#dialog1').show();
 						chooseClass.upFail();
 					}
@@ -159,7 +176,7 @@ $(function () {
 
 		});
 	});
-	wx.error(function(res) {
+	wx.error(function() {
 		alert('连接错误');
 	});
 });

@@ -18,7 +18,16 @@
 			.weui_uploader_fail:before {content: " ";position: absolute;top: 0;right: 0;bottom: 0;left: 0;background-color: rgba(0,0,0,.5);}
 			#checkJsApi{margin: 2em 0;}
 			.weui_uploader_status_content {display: none;position: absolute;top: 50%;left: 50%;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);color: #FFFFFF;}
-			.weui_uploader_input_wrp,.weui_uploader_success,.weui_uploader_fail{margin: 0 auto;float:none;background-position: 50%;}
+			.weui-uploader__file {
+				float: left;
+				margin-right: 9px;
+				margin-bottom: 9px;
+				width: 79px;
+				height: 79px;
+				background: no-repeat center center;
+				background-size: cover;
+			}
+			#uploaderFiles{list-style: none;}
         </style>
     </head>
     <body ontouchstart="">     
@@ -28,6 +37,7 @@
 		    <div class="weui_cell_bd weui_cell_primary">
 		        <div class="weui_uploader">
 		            <div class="weui_uploader_bd">
+						<ul class="weui-uploader__files" id="uploaderFiles"></ul>
 		                <div class="weui_uploader_input_wrp">
 		                    <button class="weui_uploader_input" id="chooseImage"></button>
 		                    <div class="weui_uploader_status_content">
@@ -81,5 +91,9 @@
     </body>
     <script src="js/jweixin-1.0.0.js"></script>
     <script src="js/zepto.min.js"></script>
+<<<<<<< HEAD:demo/demo.html
     <script src="js/demo.js?v=a484742"></script>
+=======
+    <script src="js/jssdk.js?v=f5151a11"></script>
+>>>>>>> origin/master:jssdk/jssdk.html
 </html>

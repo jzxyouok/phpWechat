@@ -9,7 +9,6 @@
     class JsConfig
     {
         private $appId = 'wx54abfd3dac845fab';
-        private $appsecret = 'addd017afa6d5dd22f48f69a638b9b0c';
         public  $jsurl='';
         public function https_request($url, $data = null)
         {
