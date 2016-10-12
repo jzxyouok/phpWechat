@@ -53,13 +53,13 @@ class WeixinTest{
             case 'unsubscribe':$content='感谢您关注测试公众号，希望下次可以再次关注';break;
             case 'CLICK':
                 switch ($postObj->EventKey){
-                    case 'qrcode':$content=array('qrcode','');break;
+                    case 'qrcode':$content=array('qrcode'=>'P8vLRH6pJFWzS15DjxCtsov0iFnznXFnj3Nx_WjlVwe2o2Ca8pQP05JbyeQqCKcq');break;
                     default:$content=$postObj->EventKey;
                 }
                 break;
         }
         if (is_array($content)){
-
+            $content=$this->transmitImage($postObj,$content['qrcode']);
         }else{
             $content=$this->transmitText($postObj,$content);
         }
@@ -73,8 +73,24 @@ class WeixinTest{
             $result=$this->transmiNews($postObj,$contennt);
             return $result;
         }
+        if($contennt=='jssdk'){
+            $url='http://'.$_SERVER['SERVER_NAME'].'/jssdk/jssdk.html';
+            $result=$this->transmitText($postObj,$url);
+            return $result;
+        }
+        if($contennt=='分享'){
+            $url='http://'.$_SERVER['SERVER_NAME'].'/jssdk/share.html';
+            $result=$this->transmitText($postObj,$url);
+            return $result;
+        }
+        if($contennt=='录音'){
+            $url='http://'.$_SERVER['SERVER_NAME'].'/jssdk/audio.html';
+            $result=$this->transmitText($postObj,$url);
+            return $result;
+        }
         if($contennt=='授权'){
-            $contennt='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx54abfd3dac845fab&redirect_uri='.urlencode('https://501ffe52.ngrok.io/scope/scope.html').'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
+            $url='https://'.$_SERVER['SERVER_NAME'].'/scope/scope.html';
+            $contennt='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx54abfd3dac845fab&redirect_uri='.urlencode($url).'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
             $result=$this->transmitText($postObj,$contennt);
             return $result;
         }
