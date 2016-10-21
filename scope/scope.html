@@ -14,7 +14,7 @@
         $(function() {
             console.log(location.href);
             var code=location.search.split('?')[1].split('&')[0].split('=')[1];
-            $.post('https://f942ffed.ngrok.io/scope/scope.php',{'code':code},function(data) {
+            $.post('http://3dee64ff.ngrok.io/scope/scope.php',{'code':code},function(data) {
                 console.log(typeof data);
                 $.each(data,function(name,value) {
                     var val='<li><span>'+name+'</span>'+value+'</li>';

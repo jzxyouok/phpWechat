@@ -49,7 +49,7 @@ class WeixinTest{
     {
         $content='';
         switch ($postObj->Event){
-            case 'subscribe':$content='欢迎关注测试公众号';break;
+            case 'subscribe':$content='欢迎关注0zero公众号';break;
             case 'unsubscribe':$content='感谢您关注测试公众号，希望下次可以再次关注';break;
             case 'CLICK':
                 switch ($postObj->EventKey){
@@ -73,7 +73,7 @@ class WeixinTest{
             $result=$this->transmiNews($postObj,$contennt);
             return $result;
         }
-        if($contennt=='jssdk'){
+        if($contennt=='图片'){
             $url='http://'.$_SERVER['SERVER_NAME'].'/jssdk/jssdk.html';
             $result=$this->transmitText($postObj,$url);
             return $result;
@@ -89,7 +89,7 @@ class WeixinTest{
             return $result;
         }
         if($contennt=='授权'){
-            $url='https://'.$_SERVER['SERVER_NAME'].'/scope/scope.html';
+            $url='http://'.$_SERVER['SERVER_NAME'].'/scope/scope.html';
             $contennt='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx54abfd3dac845fab&redirect_uri='.urlencode($url).'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
             $result=$this->transmitText($postObj,$contennt);
             return $result;

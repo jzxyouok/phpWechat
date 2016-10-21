@@ -1,6 +1,6 @@
 $(function () {
 	var config={};
-	var ajaxUrl='http://f942ffed.ngrok.io/';
+	var ajaxUrl='https://57b5856f.ngrok.io/';
 	var url=ajaxUrl+'JsConfig.php?jsurl='+location.href.split('#')[0];
 	sessionStorage.removeItem('serverId');
 	$.ajax({
@@ -85,19 +85,19 @@ $(function () {
 				return;
 			}
 			var i = 0,length = images.localId.length;
-			var serverId=JSON.parse(sessionStorage.getItem('serverId'));
+			var localId=JSON.parse(sessionStorage.getItem('localId'));
 			images.serverId = [];
-			if(!serverId){
-				serverId=JSON.stringify(images.localId);
-				sessionStorage.setItem('serverId',serverId);
+			if(!localId){
+				localId=JSON.stringify(images.localId);
+				sessionStorage.setItem('serverId',localId);
 			}else {
-				if(serverId.indexOf(images.localId[i]!=-1)){
+				if(localId.indexOf(images.localId[i])!=-1){
 					$("#dialog3").find('.weui_dialog_title').html('不能重复上传!');
 					$('#dialog3').show();
 					return;
 				}
-				serverId.push(images.localId[i]);
-				sessionStorage.setItem('serverId',JSON.stringify(serverId));
+				localId.push(images.localId[i]);
+				sessionStorage.setItem('localId',JSON.stringify(localId));
 			}
 			// if (length > 1) {//限制单张图片上传
 			// 	$('#dialog3').show();
@@ -115,19 +115,19 @@ $(function () {
 							upload();
 						} else {
 							var loadObj = {
-								'mediaIds': images.serverId
+								'mediaIds': images.serverId,
+								'token':'token'
 							};
 							$.ajax({
 								url: ajaxUrl+'jssdk/downImg.php',
-								type: 'GET',
+								type: 'POST',
 								data:loadObj,
-								timeout:10000,
 								success: function(data) {
+									//images.localId=[];
 									$('#toast').show();
 									setTimeout(function() {
 										$('#toast').hide();
 									}, 1000);
-									console.log(JSON.stringify(data));
 								},
 								error: function() {
 									$("#dialog1").find('.weui_dialog_title').html('上传到第三方服务器失败!');

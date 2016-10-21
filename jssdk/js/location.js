@@ -1,6 +1,6 @@
 $(function () {
     var config={};
-    var ajaxUrl='http://f942ffed.ngrok.io/';
+    var ajaxUrl='http://3dee64ff.ngrok.io/';
     var url=ajaxUrl+'JsConfig.php?jsurl='+location.href.split('#')[0];
     sessionStorage.removeItem('serverId');
     $.ajax({

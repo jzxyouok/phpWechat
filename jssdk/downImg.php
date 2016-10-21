@@ -1,14 +1,15 @@
 <?php
-    //header('Content-type:text/json;charset=utf-8');
-    if ($_GET){
+    header('Content-type:text/json;charset=utf-8');
+    header('Access-Control-Allow-Origin: *');
+    if ($_SERVER["REQUEST_METHOD"] == "POST"){
         $mediaIds=null;
-        if (isset($_GET['mediaIds'])&&!empty($_GET['mediaIds'])){
-            $mediaIds=$_GET['mediaIds'];
+        if (isset($_POST['mediaIds'])&&!empty($_POST['mediaIds'])){
+            $mediaIds=$_POST['mediaIds'];
         }
         $Img=new downImg();
         $Img->mediaId=$mediaIds;
-        echo $Img->down();
-        //$Img->getDown();
+        echo $Img->getMediaIds();
+        $Img->getImg();
     }
     class  downImg{
         public $mediaId=null;
@@ -25,21 +26,73 @@
             }
             return $str;
         }
-
+        public function getImg(){
+            $accessToken=$this->getAccessToken();
+            $mediaIds=$this->mediaId;
+            $ch = array();
+            $mh = curl_multi_init();
+            $result = array();
+            foreach ($mediaIds as $k=>$value) {
+                $filename = 'images/' . $this->createName() . '.jpg';
+                $url='http://file.api.weixin.qq.com/cgi-bin/media/get?access_token='.$accessToken.'&media_id='.$value;
+                $ch[$k] = curl_init($url);
+                curl_setopt($ch[$k], CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch[$k], CURLOPT_CUSTOMREQUEST, 'GET');
+                $fp = fopen($filename, 'wb');
+                curl_setopt($ch[$k], CURLOPT_URL, $url);
+                curl_setopt($ch[$k], CURLOPT_FILE, $fp);
+                curl_multi_add_handle($mh, $ch[$k]);
+            }
+            $active = null;
+            do {
+                $mrc = curl_multi_exec($mh, $active);
+            } while ($active > 0);
+            foreach ($ch as $ck => $cv) {
+                $result[$ck] = curl_multi_getcontent($cv);
+                usleep(1);
+                curl_multi_remove_handle($mh, $cv);
+            }
+            curl_multi_close($mh);
+        }
+        public function curlDown()
+        {
+            $accessToken=$this->getAccessToken();
+            $mediaIds=$this->mediaId;
+            foreach ($mediaIds as $value) {
+                $targetName = 'images/'.$this->createName().'.jpg';
+                $url='http://file.api.weixin.qq.com/cgi-bin/media/get?access_token='.$accessToken.'&media_id='.$value;
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+                $fp = fopen($targetName,'wb');
+                curl_setopt($ch,CURLOPT_URL,$url);
+                curl_setopt($ch,CURLOPT_FILE,$fp);
+                curl_exec($ch);
+                curl_close($ch);
+                fclose($fp);
+            }
+        }
         public function getDown()
         {
-            file_put_contents("mediaId.json", $this->mediaId);
             $accessToken=$this->getAccessToken();
             $mediaIds=$this->mediaId;
             foreach ($mediaIds as $key=>$value){
                 $url='https://api.weixin.qq.com/cgi-bin/media/get?access_token='.$accessToken.'&media_id='.$value;
-                $content = imagecreatefromjpeg($url);
-                $filename = 'images/'.$this->createName().'.jpg';
-                $Imgfun= "imagejpeg";
-                $Imgfun($content,$filename);
+                file_get_contents($url);
+                $imgType=explode('/',$http_response_header[3])[1];
+                $ImgCreateFun="imagecreatefrom{$imgType}";
+                $Imgfun= "image{$imgType}";
+                $content = @$ImgCreateFun($url);
+                if(!$content){
+                    $content = @imagecreatefrompng($url);
+                    $filename = 'images/'.$this->createName().'.png';
+                    @imagepng($content,$filename);
+                }else{
+                    $filename = 'images/'.$this->createName().'.jpg';
+                    @$Imgfun($content,$filename);
+                }
             }
         }
-        public function down()
+        public function getMediaIds()
         {
             $result=json_encode(array('state'=>'success','mediaId'=>$this->mediaId));
             return $result;

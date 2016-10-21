@@ -1,6 +1,6 @@
 $(function () {
     var config={};
-    var ajaxUrl='http://f942ffed.ngrok.io/';
+    var ajaxUrl='http://3dee64ff.ngrok.io/';
     var url=ajaxUrl+'JsConfig.php?jsurl='+location.href.split('#')[0];
     sessionStorage.removeItem('serverId');
     $.ajax({
@@ -27,7 +27,8 @@ $(function () {
         jsApiList: [
             'startRecord',
             'stopRecord',
-            'playVoice'
+            'playVoice',
+            'translateVoice'
         ]
     });
     wx.ready(function() {
@@ -65,6 +66,19 @@ $(function () {
             }
             wx.playVoice({
                 localId: voice.localId
+            });
+        });
+        document.getElementById('translateVoice').addEventListener('touchstart',function () {
+            wx.translateVoice({
+                localId: voice.localId, // 需要识别的音频的本地Id，由录音相关接口获得
+                isShowProgressTips: 1, // 默认为1，显示进度提示
+                complete: function (res) {
+                    if (res.hasOwnProperty('translateResult')) {
+                        alert('识别结果：' + res.translateResult);
+                    } else {
+                        alert('无法识别');
+                    }
+                }
             });
         });
     });
