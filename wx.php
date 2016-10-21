@@ -28,6 +28,7 @@ class WeixinTest{
     {
         $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
         $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+        $result=null;
         if (!empty($postStr)){
             $msgType=trim($postObj->MsgType);
             switch ($msgType){
@@ -69,6 +70,7 @@ class WeixinTest{
     public function reciveText($postObj)
     {
         $contennt=$postObj->Content;
+        $result=null;
         if ($contennt=='程序员'){
             $result=$this->transmiNews($postObj,$contennt);
             return $result;

@@ -143,7 +143,7 @@ $(function () {
 					}
 				});
 			}
-			upload();
+                upload();
 		});
 	});
 	wx.error(function() {

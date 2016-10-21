@@ -8,7 +8,7 @@
         }
         $Img=new downImg();
         $Img->mediaId=$mediaIds;
-        echo $Img->getMediaIds();
+        echo $Img->down();
         $Img->getImg();
     }
     class  downImg{
@@ -69,27 +69,6 @@
                 curl_exec($ch);
                 curl_close($ch);
                 fclose($fp);
-            }
-        }
-        public function getDown()
-        {
-            $accessToken=$this->getAccessToken();
-            $mediaIds=$this->mediaId;
-            foreach ($mediaIds as $key=>$value){
-                $url='https://api.weixin.qq.com/cgi-bin/media/get?access_token='.$accessToken.'&media_id='.$value;
-                file_get_contents($url);
-                $imgType=explode('/',$http_response_header[3])[1];
-                $ImgCreateFun="imagecreatefrom{$imgType}";
-                $Imgfun= "image{$imgType}";
-                $content = @$ImgCreateFun($url);
-                if(!$content){
-                    $content = @imagecreatefrompng($url);
-                    $filename = 'images/'.$this->createName().'.png';
-                    @imagepng($content,$filename);
-                }else{
-                    $filename = 'images/'.$this->createName().'.jpg';
-                    @$Imgfun($content,$filename);
-                }
             }
         }
         public function getMediaIds()
