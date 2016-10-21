@@ -1,6 +1,6 @@
 $(function () {
     var config={};
-    var ajaxUrl='http://3dee64ff.ngrok.io/';
+    var ajaxUrl='https://a1380f70.ngrok.io/';
     var url=ajaxUrl+'JsConfig.php?jsurl='+location.href.split('#')[0];
     sessionStorage.removeItem('serverId');
     $.ajax({
@@ -19,7 +19,7 @@ $(function () {
         }
     });
     wx.config({
-        debug:false,
+        debug:true,
         appId: config.appId,
         timestamp: config.timestamp,
         nonceStr: config.nonceStr,

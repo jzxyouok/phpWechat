@@ -8,13 +8,13 @@
         }
         $Img=new downImg();
         $Img->mediaId=$mediaIds;
-        echo $Img->down();
+        echo $Img->getMediaIds();
         $Img->getImg();
     }
     class  downImg{
         public $mediaId=null;
         private function getAccessToken(){
-            require_once('../getAccessToken.php');
+            require_once($_SERVER['DOCUMENT_ROOT'].'/getAccessToken.php');
             $accessToken=new AccessToken();
             return $accessToken->getAccessToken();
         }

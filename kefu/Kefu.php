@@ -22,15 +22,18 @@
             $accessToken=new AccessToken();
             return $accessToken->getAccessToken();
         }
-        public function PostMessage($openId='oPmBIxI2hEASt5vt3-CR7xbSsOn8',$msgtype='text',$content=array("content"=>"hello world")){
-            $accessToken=$this->getAccessToken();
-            $url='https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token='.$accessToken;
-            $data=json_encode(array(
-                "touser"=>$openId,
-                "msgtype"=>$msgtype,
-                $msgtype=>$content
-            ),JSON_UNESCAPED_UNICODE);
-            $result=$this->https_request($url,$data);
+        public function PostMessage($openId='oPmBIxI2hEASt5vt3-CR7xbSsOn8',$msgtype='text',$content=array("content"=>"hello world"))
+        {
+            $accessToken = $this->getAccessToken();
+            $url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' . $accessToken;
+            $data = json_encode(array(
+                "touser" => $openId,
+                "msgtype" => $msgtype,
+                $msgtype => $content
+            ), JSON_UNESCAPED_UNICODE);
+            $result = $this->https_request($url, $data);
+            $ip=$this->https_request('https://api.weixin.qq.com/cgi-bin/getcallbackip?access_token='.$accessToken);
+            echo $ip;
             echo $result;
         }
     }
