@@ -76,17 +76,17 @@ class WeixinTest{
             return $result;
         }
         if($contennt=='jssdk'){
-            $url='http://'.$_SERVER['SERVER_NAME'].'/jssdk/jssdk.html';
+            $url='https://'.$_SERVER['SERVER_NAME'].'/jssdk/jssdk.html';
             $result=$this->transmitText($postObj,$url);
             return $result;
         }
         if($contennt=='分享'){
-            $url='http://'.$_SERVER['SERVER_NAME'].'/jssdk/share.html';
+            $url='https://'.$_SERVER['SERVER_NAME'].'/jssdk/share.html';
             $result=$this->transmitText($postObj,$url);
             return $result;
         }
         if($contennt=='录音'){
-            $url='http://'.$_SERVER['SERVER_NAME'].'/jssdk/audio.html';
+            $url='https://'.$_SERVER['SERVER_NAME'].'/jssdk/audio.html';
             $result=$this->transmitText($postObj,$url);
             return $result;
         }
@@ -94,6 +94,11 @@ class WeixinTest{
             $url='https://'.$_SERVER['SERVER_NAME'].'/scope/scope.html';
             $contennt='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx54abfd3dac845fab&redirect_uri='.urlencode($url).'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
             $result=$this->transmitText($postObj,$contennt);
+            return $result;
+        }
+        if($contennt='【收到不支持的消息类型，暂无法显示】'){
+            $content = $postObj->MediaId;
+            $result=$this->transmitImage($postObj,$content);
             return $result;
         }
         $result=$this->transmitText($postObj,$contennt);
