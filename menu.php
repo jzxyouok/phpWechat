@@ -33,18 +33,21 @@
                         "sub_button":[
                             {
                                 "name":"HTML",
-                                "type":"click",
-                                "key":"html"
+                                "type":"view",
+                                "key":"html",
+                                 "url":"http://resume.0wade.win/"
                             },
                             {
                                 "name":"CSS",
-                                "type":"click",
-                                "key":"css"
+                                "type":"view",
+                                "key":"css",
+                                 "url":"http://resume.0wade.win/"
                             },
                             {
                                 "name":"javaScript",
-                                "type":"click",
-                                "key":"js"
+                                "type":"view",
+                                "key":"js",
+                                 "url":"http://resume.0wade.win/"
                             }                                                      
                         ]
                     },
@@ -53,28 +56,33 @@
                         "sub_button":[
                             {
                                 "name":"Linux",
-                                "type":"click",
-                                "key":"linux"
+                                "type":"view",
+                                "key":"linux",
+                                 "url":"http://resume.0wade.win/"
                             },
                             {
                                 "name":"Php",
-                                "type":"click",
-                                "key":"php"
+                                "type":"view",
+                                "key":"php",
+                                 "url":"http://resume.0wade.win/"
                             },
                             {
                                 "name":"MySql",
-                                "type":"click",
-                                "key":"mysql"
+                                "type":"view",
+                                "key":"mysql",
+                                 "url":"http://resume.0wade.win/"
                             },
                             {                                                                           
                                 "name":"Tp",
-                                "type":"click",
-                                "key":"tp"
+                                "type":"view",
+                                "key":"tp",
+                                "url":"http://resume.0wade.win/"
                             },
                             {                                                                           
                                 "name":"Yii",
-                                "type":"click",
-                                "key":"yii"
+                                "type":"view",
+                                "key":"yii",
+                                 "url":"http://resume.0wade.win/"
                             }                              
                         ]
                     },   
@@ -82,15 +90,25 @@
                         "name":"小玩意",
                         "sub_button":[
                             {
-                                "name":"打赏",
-                                "type":"click",
-                                "key":"money"
-                            },                        
+                                "type": "scancode_push", 
+                                "name": "扫码推事件", 
+                                "key": "rselfmenu_0_1"
+                            },
                             {
-                                "name":"历史记录",
-                                "type":"click",
-                                "key":"more"
-                            }, 
+                                "type": "scancode_waitmsg", 
+                                "name": "扫码带提示", 
+                                "key": "rselfmenu"
+                            },   
+                            {                                                    
+                                "name": "发送位置", 
+                                "type": "location_select", 
+                                "key": "rselfmenu_2_0"
+                            },
+                            {
+                                "type": "pic_photo_or_album", 
+                                "name": "拍照或者相册发图", 
+                                "key": "rselfmenu_1_1"
+                            },  
                             {
                                 "name":"二维码",
                                 "type":"click",

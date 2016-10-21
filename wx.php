@@ -1,5 +1,6 @@
 <?php
 //define your token
+date_default_timezone_set('PRC');
 define("TOKEN", "weixin");
 $weixin=new WeixinTest();
 if (isset($_GET['echostr'])){
@@ -50,7 +51,7 @@ class WeixinTest{
     {
         $content='';
         switch ($postObj->Event){
-            case 'subscribe':$content='欢迎关注测试公众号';break;
+            case 'subscribe':$content='欢迎关注0zero公众号';break;
             case 'unsubscribe':$content='感谢您关注测试公众号，希望下次可以再次关注';break;
             case 'CLICK':
                 switch ($postObj->EventKey){
@@ -74,26 +75,35 @@ class WeixinTest{
         if ($contennt=='程序员'){
             $result=$this->transmiNews($postObj,$contennt);
             return $result;
-        }
-        if($contennt=='jssdk'){
+        }else if($contennt=='图片'){
             $url='https://'.$_SERVER['SERVER_NAME'].'/jssdk/jssdk.html';
             $result=$this->transmitText($postObj,$url);
             return $result;
-        }
-        if($contennt=='分享'){
+        }else if($contennt=='分享'){
             $url='https://'.$_SERVER['SERVER_NAME'].'/jssdk/share.html';
             $result=$this->transmitText($postObj,$url);
             return $result;
-        }
-        if($contennt=='录音'){
+        }else if($contennt=='录音'){
             $url='https://'.$_SERVER['SERVER_NAME'].'/jssdk/audio.html';
             $result=$this->transmitText($postObj,$url);
             return $result;
-        }
-        if($contennt=='授权'){
+        }else if($contennt=='授权'){
             $url='https://'.$_SERVER['SERVER_NAME'].'/scope/scope.html';
             $contennt='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx54abfd3dac845fab&redirect_uri='.urlencode($url).'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
             $result=$this->transmitText($postObj,$contennt);
+            return $result;
+        }else if($contennt=='webview'){
+            $url='https://'.$_SERVER['SERVER_NAME'].'/jssdk/webview.html';
+            $contennt='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx54abfd3dac845fab&redirect_uri='.urlencode($url).'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
+            $result=$this->transmitText($postObj,$contennt);
+            return $result;
+        }else if($contennt=='【收到不支持的消息类型，暂无法显示】'){
+            $data=null;
+            if (file_exists($_SERVER["DOCUMENT_ROOT"].'/mediaId.json')) {
+                $data = json_decode(file_get_contents($_SERVER["DOCUMENT_ROOT"]."/mediaId.json"))->image;
+            }
+            $contennt=$data[mt_rand(0,count($data)-1)];
+            $result=$this->transmitImage($postObj,$contennt);
             return $result;
         }
         if($contennt='【收到不支持的消息类型，暂无法显示】'){
@@ -130,6 +140,20 @@ class WeixinTest{
     {
         $content=array('MediaId'=>$postObj->media_id,'Title'=>'木头人','Description'=>'1231231231234122435457798');
         $result=$this->transmiVedio($postObj,$content);
+        return $result;
+    }
+
+    private function transmitEvent($postObj,$content)
+    {
+        $xmlTpl="<xml>
+                <ToUserName><![CDATA[%s]]></ToUserName>
+                <FromUserName><![CDATA[%s]]></FromUserName>
+                <CreateTime>%s</CreateTime>
+                <MsgType><![CDATA[event]]></MsgType>
+                <Event><![CDATA[%s]]></Event>
+                <EventKey><![CDATA[%s]]></EventKey>
+        </xml>";
+        $result=sprintf($xmlTpl,$postObj->FromUserName,$postObj->ToUserName,time(),$postObj->Event,$content);
         return $result;
     }
     private function transmitText($postObj, $content)
