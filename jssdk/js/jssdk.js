@@ -1,6 +1,6 @@
 $(function () {
 	var config={};
-	var ajaxUrl='https://b569eba4.ngrok.io/';
+	var ajaxUrl='https://f16280e1.ngrok.io/';
 	var url=ajaxUrl+'JsConfig.php?jsurl='+location.href.split('#')[0];
 	sessionStorage.removeItem('serverId');
 	$.ajax({
@@ -108,6 +108,7 @@ $(function () {
 			function upload() {
 				wx.uploadImage({
 					localId: images.localId[i],
+					isShowProgressTips: 0,
 					success: function(res) {
 						i++;
 						images.serverId.push(res.serverId);

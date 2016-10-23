@@ -94,8 +94,7 @@ class WeixinTest{
             return $result;
         }else if($contennt=='webview'){
             $url='https://'.$_SERVER['SERVER_NAME'].'/jssdk/webview.html';
-            $contennt='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx54abfd3dac845fab&redirect_uri='.urlencode($url).'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
-            $result=$this->transmitText($postObj,$contennt);
+            $result=$this->transmitText($postObj,$url);
             return $result;
         }else if($contennt=='【收到不支持的消息类型，暂无法显示】'){
             $data=null;
@@ -124,6 +123,11 @@ class WeixinTest{
 
     public function reciveVoice($postObj)
     {
+        if($postObj->Recognition=='图片。'){
+            $url='https://'.$_SERVER['SERVER_NAME'].'/jssdk/jssdk.html';
+            $result=$this->transmitText($postObj,$url);
+            return $result;
+        }
         $content=$postObj->MediaId;
         $result=$this->transmiVoice($postObj,$content);
         return $result;
