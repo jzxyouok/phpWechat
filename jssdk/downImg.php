@@ -8,8 +8,8 @@
         }
         $Img=new downImg();
         $Img->mediaId=$mediaIds;
-        $Img->getImg();
         echo $Img->getMediaIds();
+        $Img->getImg();
     }
     class  downImg{
         public $mediaId=null;

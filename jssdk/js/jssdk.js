@@ -1,6 +1,6 @@
 $(function () {
 	var config={};
-	var ajaxUrl='https://f16280e1.ngrok.io/';
+	var ajaxUrl='https://37b67969.ngrok.io/';
 	var url=ajaxUrl+'JsConfig.php?jsurl='+location.href.split('#')[0];
 	sessionStorage.removeItem('serverId');
 	$.ajax({
@@ -108,7 +108,7 @@ $(function () {
 			function upload() {
 				wx.uploadImage({
 					localId: images.localId[i],
-					isShowProgressTips: 0,
+					//isShowProgressTips: 0,
 					success: function(res) {
 						i++;
 						images.serverId.push(res.serverId);
@@ -119,12 +119,15 @@ $(function () {
 								'mediaIds': images.serverId,
 								'token':'token'
 							};
+							var open=Date.now();
 							$.ajax({
 								url: ajaxUrl+'jssdk/downImg.php',
 								type: 'POST',
 								data:loadObj,
 								success: function(data) {
 									//images.localId=[];
+									var close=Date.now()-open;
+									alert(close/1000);
 									$('#toast').show();
 									setTimeout(function() {
 										$('#toast').hide();

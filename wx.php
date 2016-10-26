@@ -87,9 +87,14 @@ class WeixinTest{
             $url='https://'.$_SERVER['SERVER_NAME'].'/jssdk/audio.html';
             $result=$this->transmitText($postObj,$url);
             return $result;
-        }else if($contennt=='授权'){
+        }else if($contennt=='动态授权'){
             $url='https://'.$_SERVER['SERVER_NAME'].'/scope/scope.html';
             $contennt='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx54abfd3dac845fab&redirect_uri='.urlencode($url).'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
+            $result=$this->transmitText($postObj,$contennt);
+            return $result;
+        }else if($contennt=='静态授权'){
+            $url='https://'.$_SERVER['SERVER_NAME'].'/scope/scope.html';
+            $contennt='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx54abfd3dac845fab&redirect_uri='.urlencode($url).'&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
             $result=$this->transmitText($postObj,$contennt);
             return $result;
         }else if($contennt=='webview'){
@@ -104,8 +109,7 @@ class WeixinTest{
             $contennt=$data[mt_rand(0,count($data)-1)];
             $result=$this->transmitImage($postObj,$contennt);
             return $result;
-        }
-        if($contennt='【收到不支持的消息类型，暂无法显示】'){
+        }else if($contennt=='【收到不支持的消息类型，暂无法显示】'){
             $content = $postObj->MediaId;
             $result=$this->transmitImage($postObj,$content);
             return $result;

@@ -13,10 +13,10 @@
     <script>
         $(function() {
             var code=location.search.split('?')[1].split('&')[0].split('=')[1];
-            $.post('https://a703919c.ngrok.io/scope/scope.php',{'code':code},function(data) {
-                console.log(typeof data);
+            $.post('https://37b67969.ngrok.io/scope/scope.php',{'code':code},function(data) {
+                console.log(data);
                 $.each(data,function(name,value) {
-                    var val='<li><span>'+name+'</span>'+value+'</li>';
+                    var val='<li><span>'+name+':</span>'+value+'</li>';
                     $('#app ul').append(val);
                 })
             })
